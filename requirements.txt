@@ -1,0 +1,19 @@
+# export PATH="/usr/local/cuda-11.8/bin:$PATH"
+# python train_net.py --config-file model/cascade_dit_base.yaml --num-gpus 1 MODEL.WEIGHTS model/model_weights.pth OUTPUT_DIR output/
+# --extra-index-url https://download.pytorch.org/whl/cu113
+
+# torch==1.12.0+cu113 
+# torchvision==0.13.0+cu113 
+# torchaudio==0.12.0 
+timm
+Pillow
+blobfile
+mypy
+numpy
+pytest
+requests
+einops
+tensorboardX
+deepspeed
+scipy
+opencv-python

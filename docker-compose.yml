@@ -1,0 +1,17 @@
+version: '3.1'
+
+services:
+  jupyter-services:
+    build: 9861531522/aistudio-jupyter-services-gpu:v2.4
+    environment:
+      - NOTEBOOK_USER=prayas
+      - PASSWORD=FuseNepal
+    # volumes:
+    # - ./filestore/notebooks: /home/jovyan/
+    x-develop:
+      watch:
+        - action: rebuild
+          path: ./jupyter
+    ports:
+      - 8888:8888
+      - 43800:43800

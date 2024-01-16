@@ -1,0 +1,35 @@
+FROM nvidia/cuda:11.7.1-devel-ubuntu20.04
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the requirements file to the container
+COPY requirements.txt .
+
+# Set environment variable to non-interactive to avoid prompts during installation
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Update the package manager and install necessary packages
+RUN apt-get update && apt-get install -y \
+	python3-opencv ca-certificates python3-dev git wget sudo ninja-build
+RUN ln -sv /usr/bin/python3 /usr/bin/python
+
+RUN apt-get install git -y && apt-get install ffmpeg libsm6 libxext6  -y
+ENV PATH="/home/appdduser/.local/bin:${PATH}"
+RUN wget https://bootstrap.pypa.io/pip/3.6/get-pip.py && \
+	python3 get-pip.py --user && \
+	rm get-pip.py
+# RUN set -xe \
+#     && apt-get update  -y \
+#     && apt-get install python3-pip -yz
+RUN pip install --no-cache-dir -r requirements.txt
+# Copy the rest of your application code to the container 
+RUN pip install 'git+https://github.com/facebookresearch/fvcore' 
+RUN pip install 'git+https://github.com/facebookresearch/detectron2.git' 
+COPY . .
+
+# Expose the port your application will run on
+EXPOSE 8052
+
+# Specify the command to run your application
+CMD ["uvicorn",  "app:app", "--reload"]
